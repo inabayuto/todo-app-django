@@ -2,7 +2,7 @@
 
 <a href="{% url 'tasks'%}">return</a>
 
-<form action="" method="post">
+<form method="POST" action="">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit", value="add">
