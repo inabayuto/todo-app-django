@@ -5,27 +5,28 @@ from .models import Task
 from django.urls import reverse_lazy
 
 from django.contrib.auth.views import LoginView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
-class TaskList(ListView):
+class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
+    redirect_field_name = "login"
 
-class TaskDetail(DetailView):
+class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
 
-class TaskCreate(CreateView):
+class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy('tasks') # 成功したらtasksにリダイレクト
 
-class TaskUpdate(UpdateView):
+class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy("tasks") # 成功したらtasksにリダイレクト
 
-class TaskDelete(DeleteView):
+class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy("tasks") # 成功したらtasksにリダイレクト
