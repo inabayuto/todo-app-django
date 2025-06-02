@@ -1,3 +1,4 @@
+from django.forms.models import BaseModelForm
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -12,15 +13,25 @@ class TaskList(LoginRequiredMixin, ListView):
     context_object_name = 'tasks'
     redirect_field_name = "login"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["tasks"] = context["tasks"].filter(user=self.request.user)
+        return context
+
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = "__all__"
+    fields = ["title", "description", "completed"]
     success_url = reverse_lazy('tasks') # 成功したらtasksにリダイレクト
 
+    def form_invalid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+            
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = "__all__"
