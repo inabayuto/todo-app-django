@@ -1,5 +1,7 @@
 <h1>add Task</h1>
 
+<a href="{% url 'tasks'%}">return</a>
+
 <form action="" method="post">
     {% csrf_token %}
     {{form.as_p}}

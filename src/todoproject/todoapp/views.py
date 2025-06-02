@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Task
 from django.urls import reverse_lazy
 
@@ -17,3 +17,8 @@ class TaskCreate(CreateView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy('tasks') # 成功したらtasksにリダイレクト
+
+class TaskUpdate(UpdateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("tasks") # 成功したらtasksにリダイレクト
